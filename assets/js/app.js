@@ -1,9 +1,11 @@
 $(document).ready(function () {
 
+
 $('#lyric-btn').on('click', function (){
 
-	var userInput = $('#lyric-input').val().trim();
-	var queryURL = "http://api.musixmatch.com/ws/1.1/track.search?apikey=455f0aefff3b00f8f559b6b271f6a28d&q_track=" + userInput;
+	userInput = $('#lyric-input').val().trim();
+	$('#lyric-input').val("");
+	var queryURL = "http://api.musixmatch.com/ws/1.1/track.search";
 
 	console.log(queryURL);
 
@@ -11,30 +13,57 @@ $('#lyric-btn').on('click', function (){
 	    $.ajax({
 	        url: queryURL,
 
-	        type: "GET",
+	        method: "GET",
 
-		    // Tell jQuery we're expecting JSONP
-		    dataType: "jsonp xml",
-		 
-		    // Work with the response
-		    success: function( response ) {
-		        console.log( response ); // server response
+	        dataType: 'jsonp',
+	        data: {
+		        format: "jsonp",
+		        callback: 'jsonpCallback',
+		        apikey: '455f0aefff3b00f8f559b6b271f6a28d',
+		        q_track: userInput
 		    }
-	    })
-	    .done(function (response) {
-	    	//$.each(response, function (index, value) { <-- I couldn't get it to work using this, and idk why?
+	    });
+
+	    window.jsonpCallback = function(response) {
+	    	console.log(response);
+	    	$('#genreButtons').empty();
+
+	    	var genreArray = [];
+
 	    	for (var i=0; i<response.message.body.track_list.length; i++) {
-	    		console.log(response.message.body.track_list[i]);
-	    		/*var results = 
-	    		$('#gifsView').append(image);*/
+
+	    		var genreName = response.message.body.track_list[i].track.primary_genres.music_genre_list[0].music_genre.music_genre_name;
+	    		var genreBool = true;
+
+	    		for (var j=0; j < genreArray.length; j++) {
+	    			if (genreArray[j] === genreName) {
+	    				genreBool = false;
+	    			}
+
+
+	    		}
+
+	    		// console.log(response[i]);
+	    		// console.log(genreName);
+
+	    		if (genreBool) {
+		    		var genre = $('<button class="genre">' + genreName + '</button>');
+		    		$('#genreButtons').append(genre);
+		    		genreArray.push(genreName);
+	    		}
+
 	    	};
+	    };
 
-	    	$('#moreGifs').show().html('more');
-
-		});
 
 
 });
+
+$('#genreButtons').on('click', function(){
+
+});
+
+});
+
 	
 
-});
