@@ -1,7 +1,6 @@
 $(document).ready(function () {
 
-		    	var genreArray = [];
-
+var genreObj = {};
 
 
 $('#lyric-btn').on('click', function (){
@@ -32,6 +31,7 @@ $('#lyric-btn').on('click', function (){
 	    	$('#genreButtons').empty();
 
 
+
 	    	for (var i=0; i<response.message.body.track_list.length; i++) {
 
 	    		if (response.message.body.track_list[i].track.primary_genres.music_genre_list.length > 0) {
@@ -40,23 +40,36 @@ $('#lyric-btn').on('click', function (){
 	    		var genreBool = true;
 	    		
 
-		    		for (var j=0; j < genreArray.length; j++) {
-		    			if (genreArray[j] === genreName) {
-		    				genreBool = false;
-		    			}
-		    		}
+		    		// for (var j=0; j < genreArray.length; j++) {
+		    		// 	if (genreArray[j] === genreName) {
+		    		// 		genreBool = false;
+		    		// 	}
+		    		// }
+		    		for (var prop in genreObj){
+		    			if (genreObj.hasOwnProperty(prop)){
+		    				if(prop === genreName){
+		    					genreBool = false;
+		    					genreObj[prop].push(response.message.body.track_list[i].track.track_id);
+		    				}
 
+		    			}
+
+		    			
+		    		}
 		    		// console.log(response[i]);
 		    		// console.log(genreName);
 
-		    		if (genreBool) {
-			    		var genre = $('<button class="genre">' + genreName + '</button>');
-			    		$('#genreButtons').append(genre);
-			    		genreArray.push(genreName);
-		    		}
+		    		 if (genreBool) {
+			    	 	var genre = $('<button class="genre">' + genreName + '</button>');
+			    	 	$('#genreButtons').append(genre);
+			    	 	//genreArray.push(genreName);
+			    	 	genreObj[genreName] = [response.message.body.track_list[i].track.track_id];
+			    	 	
+		    		 }
 	    		
 	    		};
 	    	} 
+	    	console.log(genreObj);
 	    	
 	    };
 
