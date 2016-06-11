@@ -1,5 +1,8 @@
 $(document).ready(function () {
 
+		    	var genreArray = [];
+
+
 
 $('#lyric-btn').on('click', function (){
 
@@ -28,7 +31,6 @@ $('#lyric-btn').on('click', function (){
 	    	console.log(response);
 	    	$('#genreButtons').empty();
 
-	    	var genreArray = [];
 
 	    	for (var i=0; i<response.message.body.track_list.length; i++) {
 
