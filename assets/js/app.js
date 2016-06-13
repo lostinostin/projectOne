@@ -100,6 +100,7 @@ $(document).ready(function () {
 				for (j=0; j<element.length; j++) {
 
 					trackIdArray.push(element[j]);
+					$('#results').append(trackIdArray);
 
 				}
 				
