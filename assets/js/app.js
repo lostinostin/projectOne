@@ -60,7 +60,7 @@ $('#lyric-btn').on('click', function (){
 		    		// console.log(genreName);
 
 		    		 if (genreBool) {
-			    	 	var genre = $('<button class="genre">' + genreName + '</button>');
+			    	 	var genre = $('<button class="genre" onclick="getButton()">' + genreName + '</button>');
 			    	 	$('#genreButtons').append(genre);
 			    	 	//genreArray.push(genreName);
 			    	 	genreObj[genreName] = [response.message.body.track_list[i].track.track_id];
@@ -77,9 +77,9 @@ $('#lyric-btn').on('click', function (){
 
 });
 
-$('#genreButtons').on('click', function(){
+//$('#genreButtons').on('click', function(){
 
-});
+//});
 
 });
 
