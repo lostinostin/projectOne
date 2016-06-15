@@ -6,13 +6,16 @@ $(document).ready(function () {
 	var track;
 	var genreBool;
 	var genre;
-	var userClick;
 	var genreClicked;
 	var j;
 	var trackIdArray = [];
+	var trackID;
+	var trackName;
+	var trackDiv;
 
 	$('#lyric-btn').on('click', function (){
-
+		$('#results').empty();
+		trackIdArray = [];
 		userInput = $('#lyric-input').val().trim();
 		$('#lyric-input').val("");
 		queryURL = "http://api.musixmatch.com/ws/1.1/track.search";
@@ -65,7 +68,7 @@ $(document).ready(function () {
 		    		// console.log(genreName);
 
 		    		if (genreBool) {
-			    	 	genre = $('<button id="'+ genreName + '" class="genre">' + genreName + '</button>');
+			    	 	genre = $('<button id="'+ genreName + '" class="genre btn btn-secondary btn-block">' + genreName + '</button>');
 			    	 	$('#genreButtons').append(genre);
 			    	 	genreObj[genreName] = [track];
 
@@ -77,6 +80,8 @@ $(document).ready(function () {
 	});
 
 	$('#genreButtons').on('click', 'button', function(e){
+		$('#results').empty();
+		trackIdArray = [];
 		genreClicked = e.target.id;
 		console.log(genreClicked);
 		console.log(genreObj);
@@ -98,47 +103,55 @@ $(document).ready(function () {
 
 			if (genreClicked === key) {
 				for (j=0; j<element.length; j++) {
-
-					trackIdArray.push(element[j]);
-					$('#results').append(trackIdArray);
+					trackID = element[j];
+					trackIdArray.push(trackID);
+					//$('#results').append(trackIdArray + " ");
 
 				}
 				
-			} 
-		
-		}); console.log(trackIdArray);
-		
+			}
+
+		}); 
+
+		// The following code needs to run FOR EACH object in the trackIdArray so an ajax call is made for each track_id
+
+		for(var k = 0; k < trackIdArray[k]; k++) {
+			console.log(trackIdArray[k]);
+
+			queryURL = "http://api.musixmatch.com/ws/1.1/track.get";
+			console.log(queryURL);
+
+			    $.ajax({
+			        url: queryURL,
+
+			        method: "GET",
+
+			        dataType: 'jsonp',
+			        data: {
+				        format: "jsonp",
+				        callback: 'jsonpCallback',
+				        apikey: '455f0aefff3b00f8f559b6b271f6a28d',
+				        track_id: trackIdArray[k]
+				    }
+			    });
+
+		    window.jsonpCallback = function(response) {
+		    	console.log(response);
+
+		    	trackName = response.message.body.track.track_name;
+		    	var 
+		    	trackDiv = ('<div class="container"><div class="row"><div>' + trackName);
+		    	$('#results').append(trackDiv);
+		    	console.log(trackName);
+			    
+
+		    };
+		}
 		
 	}); 
 
 	
 
-	// 	queryURL = "http://api.musixmatch.com/ws/1.1/track.get";
-	// 	userClick = $(genreObj.attr('id');
-	// 	console.log(e.genreObj);
-	// 	console.log(userClick);
-
-	//     $.ajax({
-	//         url: queryURL,
-
-	//         method: "GET",
-
-	//         dataType: 'jsonp',
-	//         data: {
-	// 	        format: "jsonp",
-	// 	        callback: 'jsonpCallback',
-	// 	        apikey: '455f0aefff3b00f8f559b6b271f6a28d',
-	// 	        track_id: userClick
-	// 	    }
-	//     });
-
-	//     window.jsonpCallback = function(response) {
-	//     	console.log(response);
-
-
-	//     };
-
-
-	// });
+		
 
 });
