@@ -5,31 +5,24 @@ function scrollToAnchor(aid){
 	}
 
 $(document).ready(function () {
-<<<<<<< Updated upstream
-var genreObj = {};
-=======
 
 
 
 
 	var genreObj = {Miscellaneous: []};
 	
->>>>>>> Stashed changes
 
-$('#lyric-btn').on('click', function (){
+	$('#lyric-btn').on('click', function (){
 
-	userInput = $('#lyric-input').val().trim();
-	$('#lyric-input').val("");
-	var queryURL = "http://api.musixmatch.com/ws/1.1/track.search";
+		userInput = $('#lyric-input').val().trim();
+		$('#lyric-input').val("");
+		var queryURL = "http://api.musixmatch.com/ws/1.1/track.search";
 
-	console.log(queryURL);
+		console.log(queryURL);
 
-	//$('#gifsView').empty();
 	    $.ajax({
 	        url: queryURL,
-
 	        method: "GET",
-
 	        dataType: 'jsonp',
 	        data: {
 		        format: "jsonp",
@@ -43,66 +36,48 @@ $('#lyric-btn').on('click', function (){
 	    	console.log(response);
 	    	$('#genreButtons').empty();
 
-	    	// var genreArray = [];
-	    	//var genreObj = {};
-
 	    	for (var i=0; i<response.message.body.track_list.length; i++) {
 
 	    		if (response.message.body.track_list[i].track.primary_genres.music_genre_list.length > 0) {
 
-	    		var genreName = response.message.body.track_list[i].track.primary_genres.music_genre_list[0].music_genre.music_genre_name;
-	    		var genreBool = true;
+		    		var genreName = response.message.body.track_list[i].track.primary_genres.music_genre_list[0].music_genre.music_genre_name;
+		    		var genreBool = true;
+		    		var trackID = response.message.body.track_list[i].track.track_id;
+		    		var spotifyID = response.message.body.track_list[i].track.track_spotify_id;
+		    		var trackName = response.message.body.track_list[i].track.track_name;
+		    		var trackArtist = response.message.body.track_list[i].track.artist_name;
 	    		
-
-		    		// for (var j=0; j < genreArray.length; j++) {
-		    		// 	if (genreArray[j] === genreName) {
-		    		// 		genreBool = false;
-		    		// 	}
-		    		// }
+	    			//Loops through genreObj properties and checks if genre already exists. If it does, sets boolean to false
+	    			//and pushes new array with current trackID and spotifyID
 		    		for (var prop in genreObj){
 		    			if (genreObj.hasOwnProperty(prop)){
 		    				if(prop === genreName){
 		    					genreBool = false;
-		    					genreObj[prop].push(response.message.body.track_list[i].track.track_id);
+		    					genreObj[prop].push([trackID, spotifyID, trackName, trackArtist]);
 		    				}
-
 		    			}
+		    		}
 
-<<<<<<< Updated upstream
-		    			
-=======
 		    		//If the genre doesn't exist: creates new button for that genre and property for that genre in genreObj with
 		    		//an array of arrays containing the current trackID and spotifyID
 		    		if (genreBool) {
 				    	var genre = $('<button class="genre btn btn-default btn-block btn-lg" id=' + genreName + '>' + genreName + '</button>');
 				    	$('#genreButtons').append(genre);
 				    	genreObj[genreName] = [[trackID, spotifyID, trackName, trackArtist]];
->>>>>>> Stashed changes
 		    		}
-		    		// console.log(response[i]);
-		    		// console.log(genreName);
-
-		    		 if (genreBool) {
-			    	 	var genre = $('<button class="genre">' + genreName + '</button>');
-			    	 	$('#genreButtons').append(genre);
-			    	 	//genreArray.push(genreName);
-			    	 	genreObj[genreName] = [response.message.body.track_list[i].track.track_id];
-			    	 	
-		    		 }
-	    		
-	    		};
+	    		}
+	    		else{
+	    			var trackID = response.message.body.track_list[i].track.track_id;
+	    			var spotifyID = response.message.body.track_list[i].track.track_spotify_id;
+	    			var trackName = response.message.body.track_list[i].track.track_name;
+		    		var trackArtist = response.message.body.track_list[i].track.artist_name;
+	    			genreObj.Miscellaneous.push([trackID, spotifyID, trackName, trackArtist]);
+	    		}
 	    	} 
-<<<<<<< Updated upstream
-=======
 	    	var miscButton = $('<button class="genre btn btn-default btn-block btn-lg" id="Miscellaneous">Miscellaneous</button>');
 	    	$('#genreButtons').append(miscButton);
->>>>>>> Stashed changes
 	    	console.log(genreObj);
-	    	
 	    };
-<<<<<<< Updated upstream
-
-=======
 	    scrollToAnchor('gButtons');
 	    return false;
 	    
@@ -110,17 +85,16 @@ $('#lyric-btn').on('click', function (){
 
 	$(document).on('click', '.genre', function(){
 		$('#results').empty();
->>>>>>> Stashed changes
 
+		var genrePicked = $(this).attr('id'); //sets to the ID of the genreButton that was picked
+		pickedTrackList = genreObj[genrePicked]; //sets to the property in genreObj that matches the button id. This is an array
+		//console.log(pickedTrackList); //logs array with all of the tracks for that genre
+		//console.log(pickedTrackList[0][0], pickedTrackList[0][1]); //logs the trackID and spotifyID of the first track for the picked genre
+		var counter = 0;
 
-});
+		for (i = 0; i < pickedTrackList.length; i++){
+			var queryURL = "http://api.musixmatch.com/ws/1.1/track.lyrics.get";
 
-$('#genreButtons').on('click', function(){
-
-});
-
-<<<<<<< Updated upstream
-=======
 			$.ajax({
 	        url: queryURL,
 	        method: "GET",
@@ -144,7 +118,6 @@ $('#genreButtons').on('click', function(){
 		}
 		scrollToAnchor('lyricResults');
 	});
->>>>>>> Stashed changes
 });
 
 	
