@@ -1,5 +1,20 @@
+function scrollToAnchor(aid){
+		console.log('hit');
+	    var aTag = $("a[name='"+ aid +"']");
+	    $('html, body').animate({scrollTop: aTag.offset().top},'slow');
+	}
+
 $(document).ready(function () {
+<<<<<<< Updated upstream
 var genreObj = {};
+=======
+
+
+
+
+	var genreObj = {Miscellaneous: []};
+	
+>>>>>>> Stashed changes
 
 $('#lyric-btn').on('click', function (){
 
@@ -53,7 +68,16 @@ $('#lyric-btn').on('click', function (){
 
 		    			}
 
+<<<<<<< Updated upstream
 		    			
+=======
+		    		//If the genre doesn't exist: creates new button for that genre and property for that genre in genreObj with
+		    		//an array of arrays containing the current trackID and spotifyID
+		    		if (genreBool) {
+				    	var genre = $('<button class="genre btn btn-default btn-block btn-lg" id=' + genreName + '>' + genreName + '</button>');
+				    	$('#genreButtons').append(genre);
+				    	genreObj[genreName] = [[trackID, spotifyID, trackName, trackArtist]];
+>>>>>>> Stashed changes
 		    		}
 		    		// console.log(response[i]);
 		    		// console.log(genreName);
@@ -68,10 +92,25 @@ $('#lyric-btn').on('click', function (){
 	    		
 	    		};
 	    	} 
+<<<<<<< Updated upstream
+=======
+	    	var miscButton = $('<button class="genre btn btn-default btn-block btn-lg" id="Miscellaneous">Miscellaneous</button>');
+	    	$('#genreButtons').append(miscButton);
+>>>>>>> Stashed changes
 	    	console.log(genreObj);
 	    	
 	    };
+<<<<<<< Updated upstream
 
+=======
+	    scrollToAnchor('gButtons');
+	    return false;
+	    
+	});
+
+	$(document).on('click', '.genre', function(){
+		$('#results').empty();
+>>>>>>> Stashed changes
 
 
 });
@@ -80,6 +119,32 @@ $('#genreButtons').on('click', function(){
 
 });
 
+<<<<<<< Updated upstream
+=======
+			$.ajax({
+	        url: queryURL,
+	        method: "GET",
+	        dataType: 'jsonp',
+	        data: {
+		        format: "jsonp",
+		        callback: 'jsonpCallbackFinal',
+		        apikey: '455f0aefff3b00f8f559b6b271f6a28d',
+		        track_id: pickedTrackList[i][0]
+		    }
+	    })
+			window.jsonpCallbackFinal = function(response) {
+				var trackLyrics = response.message.body.lyrics.lyrics_body;
+				var parsedTrackLyrics = trackLyrics.replace(/\n/g,"<br />");
+				$('#results').append("<div><h2>" + pickedTrackList[counter][2] + " by " + 
+					pickedTrackList[counter][3] + "</h2><iframe src='https://embed.spotify.com/?uri=spotify:track:" + 
+					pickedTrackList[counter][1] + "' frameborder='0' allowtransparency='true'></iframe><p>" + 
+					parsedTrackLyrics + "</p></div>");
+				counter++;
+			}
+		}
+		scrollToAnchor('lyricResults');
+	});
+>>>>>>> Stashed changes
 });
 
 	

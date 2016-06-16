@@ -1,3 +1,18 @@
+<<<<<<< Updated upstream
+=======
+:root {	
+	--gray-turquoise: #C4DAD5;
+	--deep-navy: #1C1456;
+	--white: #FFFFFF;
+	--olive: #404D13;
+	--new-black: #293404;
+}
+
+.jumbotron{
+	text-align: center;
+}
+
+>>>>>>> Stashed changes
 .container-fluid {
 	padding:0;
 }
