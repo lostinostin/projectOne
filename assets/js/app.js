@@ -51,7 +51,7 @@ $(document).ready(function () {
 		console.log("auth Changed", user);
 		currentlySignedIn = user;
 		console.log(currentlySignedIn);
-		if(user){
+		if(currentlySignedIn){
 			$('.wrapper').show();
 			$('.demo-layout').hide();
 			firebase.database().ref("/user-counter/"+firebase.auth().currentUser.uid).once("value").then(function(data){
@@ -71,18 +71,18 @@ $(document).ready(function () {
 		}
 	});
 
-	$("#lyric-btn").on("click", function(){
-		var user = firebase.auth().currentUser;
+	// $("#lyric-btn").on("click", function(){
+	// 	var user = firebase.auth().currentUser;
 
-		if(user){
-			var counterKey = firebase.database().ref().child("counter").push().key;
-			var updates = {};
-			updates['/counter/' + counterKey] = 1;
-			updates['/user-counter/' + user.uid + '/' + counterKey] = 1;
+	// 	if(user){
+	// 		var counterKey = firebase.database().ref().child("counter").push().key;
+	// 		var updates = {};
+	// 		updates['/counter/' + counterKey] = 1;
+	// 		updates['/user-counter/' + user.uid + '/' + counterKey] = 1;
 
-  			console.log(firebase.database().ref().update(updates));
-		}
-	});
+ //  			console.log(firebase.database().ref().update(updates));
+	// 	}
+	// });
 
 	$("#sign-out").on("click", function(){
 		firebase.auth().signOut();
@@ -91,7 +91,10 @@ $(document).ready(function () {
 
 	$('#lyric-btn').on('click', function (){
 
+		var user = firebase.auth().currentUser;
 		userInput = $('#lyric-input').val().trim();
+
+		
 
 		$('#lyric-input').val("");
 
@@ -117,12 +120,23 @@ $(document).ready(function () {
 	    	console.log(response);
 	    	$('#genreButtons').empty();
 
+	    	if(user){
+				var counterKey = firebase.database().ref().child("counter").push().key;
+				var updates = {};
+				updates['/counter/' + counterKey] = userInput;
+				updates['/user-counter/' + user.uid + '/' + counterKey] = userInput;
+
+	  			console.log(firebase.database().ref().update(updates));
+			}
+
 	    	for (var i=0; i<response.message.body.track_list.length; i++) {
 
-	    		dbLoad.push({
-					lyric_input: userInput,
-					user: currentlySignedIn
-				});
+
+
+	   //  		dbLoad.push({
+				// 	lyric_input: userInput,
+				// 	user: currentlySignedIn
+				// });
 
 	    		if (response.message.body.track_list[i].track.primary_genres.music_genre_list.length > 0) {
 
@@ -167,15 +181,16 @@ $(document).ready(function () {
 	    		return false;
 	    	} 
 
-	    	dbLoad.on("child_added", function(snapshot) {
 
-	    		var miscButton = $('<button class="genre" id="Miscellaneous">Miscellaneous</button>');
-		    	$('#genreButtons').append(miscButton);
-		    	console.log(genreObj);
+	  //   	dbLoad.on("child_added", function(snapshot) {
 
-			}, function (errorObject) {
-				console.log("the read failed: " + errorObject.code);
-			});
+	  //   		var miscButton = $('<button class="genre" id="Miscellaneous">Miscellaneous</button>');
+		 //    	$('#genreButtons').append(miscButton);
+		 //    	console.log(genreObj);
+
+			// }, function (errorObject) {
+			// 	console.log("the read failed: " + errorObject.code);
+			// });
 
 	    	
 	    };
