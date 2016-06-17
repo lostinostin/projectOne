@@ -6,6 +6,10 @@
 	--new-black: #293404;
 }
 
+.jumbotron{
+	text-align: center;
+}
+
 .container-fluid {
 	padding:0;
 }
