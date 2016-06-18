@@ -1,68 +1,3 @@
-// $("#quickstart-sign-up").on("click", function(e){
-// 		e.preventDefault();
-// 		var email = $("#email").val();
-// 		var validPassword = /((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,20})/;
-// 		var password = $("#password").val();
-// 		var testedPassword = password.match(validPassword);
-		
-// 		firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
-		
-// 			if (email.length < 6) {
-// 				alert('Please enter a valid email address');
-// 				return;
-// 			}
-// 			if (testedPassword === null) {
-// 				alert('Password must be at least 8 characters long include at least one number, lowercase letter, uppercase letter, special character.');
-// 				return;
-// 			}
-// 		});
-
-// 	});
-
-// 	$("#quickstart-sign-in").on("click", function(e){
-
-// 		if (firebase.auth().currentUser) {
-// 			firebase.auth().signOut();
-// 		} else {
-// 		var email = $("#email").val();
-// 		var password = $("#password").val();
-
-// 		firebase.auth().signInWithEmailAndPassword(email, password).catch(function(e){
-// 			console.log(e.message);
-// 			var errorCode = error.code;
-// 			var errorMessage = error.message;
-// 			if (errorCode === 'auth/wrong-password') {
-// 				alert('Sorry, that password is incorrect')
-// 			}
-// 		});
-// 		// $('.wrapper').show();
-// 		// 		$('.demo-layout').hide(); 
-// 		}
-// 	});
-
-// 	firebase.auth().onAuthStateChanged(function(user){
-// 		console.log("auth Changed", user);
-// 		currentlySignedIn = user;
-// 		console.log(currentlySignedIn);
-// 		if(currentlySignedIn){
-// 			$('.wrapper').show();
-// 			$('.demo-layout').hide();
-// 			firebase.database().ref("/user-counter/"+firebase.auth().currentUser.uid).once("value").then(function(data){
-// 				console.log(data.val());
-// 				// $('.wrapper').show();
-// 				// $('.demo-layout').hide();
-// 				// window.location.href = "index.html";
-				
-// 			});
-// 		} else {
-
-// 			//window.location.href = "authTest.html";
-// 			$('.wrapper').hide();
-// 			$('.login-page').show();
-// 			document.getElementById('quickstart-sign-in').disabled = false;
-// 			debugger;
-// 		}
-// 	});
 
 function scrollToAnchor(aid){
 	    var aTag = $("a[name='"+ aid +"']");
@@ -105,6 +40,7 @@ function getArtistFromTrack(spotifyTrack){
 	}
 
 $(document).ready(function () {
+
 
 	var dbLoad = new Firebase("https://tipot.firebaseio.com/");
 	var currentlySignedIn;
@@ -180,7 +116,6 @@ $(document).ready(function () {
 
 	});
 
-
 	$('#buffer1').hide();
 	$('#buffer2').hide();
 	$('#genreArea').hide();
@@ -194,7 +129,10 @@ $(document).ready(function () {
 	
 	//$(document).on('click', '.lyric-btn', function (){
 	var lyricSearch = function(){
+<<<<<<< HEAD
 		var user = firebase.auth().currentUser;
+=======
+>>>>>>> c750503ce3600e5eda6d3f56ad69ed151cbc9f03
 		genreObj = {Miscellaneous: []};
 		var genreBool= true;
 		$('#results').empty();
@@ -206,7 +144,11 @@ $(document).ready(function () {
 
 		userInput = $('.lyric-input').val().trim();
 		console.log(userInput);
+
 		//$('.lyric-input').val("");
+
+		$('.lyric-input').val("");
+
 		var queryURL = "https://api.musixmatch.com/ws/1.1/track.search";
 
 		console.log(queryURL);
@@ -343,8 +285,20 @@ $(document).ready(function () {
 				$('#results').accordion("option", "collapsible", true);
 				$('#results').accordion("option", "active", false);
 
+
 			}
 		}
+		if (emptyDrop){
+			var genreDropdown = $('<ul class="nav navbar-nav" id="addingGenres"><li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Change Genre<span class="caret"></span></a><ul class="dropdown-menu" id="dropdownGenre"></ul></li><ul>');
+			$('#navbarfull').append(genreDropdown);
+		
+			for (i = 0; i < genreDrop.length; i++){
+				$('#dropdownGenre').append(genreDrop[i]);
+
+			}
+			emptyDrop = false;
+		}
+
 		if (emptyDrop){
 			var genreDropdown = $('<ul class="nav navbar-nav" id="addingGenres"><li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Change Genre<span class="caret"></span></a><ul class="dropdown-menu" id="dropdownGenre"></ul></li><ul>');
 			$('#navbarfull').append(genreDropdown);
@@ -354,8 +308,10 @@ $(document).ready(function () {
 			}
 			emptyDrop = false;
 		}
+
 		
 		scrollToAnchor('lyricResults');
 	});
 $(document).on('click', '.lyric-btn', lyricSearch);
 });
+
