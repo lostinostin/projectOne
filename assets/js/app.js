@@ -120,12 +120,7 @@ $(document).ready(function () {
 			console.log(searchHistory);
 			
 			userSearches.push(searchHistory);
-			for(i = 0; i < userSearches.length; i++){
-				if (i < 6) {
-					console.log('here');
-					$('#searchHistory').append('<span> &nbsp;' + userSearches[i]  + ' &nbsp</span>');
-				}
-			}
+			
 			console.log(userSearches);
 		})
 	});
@@ -149,7 +144,7 @@ $(document).ready(function () {
 					printCounter++;
 				}
 			}
-		}, 1000);
+		}, 2000);
 
 
 
@@ -204,7 +199,7 @@ $(document).ready(function () {
 		        format: "jsonp",
 		        callback: 'jsonpCallback',
 		        apikey: '455f0aefff3b00f8f559b6b271f6a28d',
-		        q_track: userInput
+		        q: userInput
 		    }
 	    });
 
