@@ -155,7 +155,7 @@ $(document).ready(function () {
 					printCounter++;
 				}
 			}
-		}, 500);
+		}, 1000);
 
 
 
