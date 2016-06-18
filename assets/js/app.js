@@ -1,4 +1,5 @@
 var userSearches = [];
+var alreadyAddedRecent = [];
 function scrollToAnchor(aid){
 	    var aTag = $("a[name='"+ aid +"']");
 	    $('html, body').animate({scrollTop: aTag.offset().top},'slow');
@@ -99,6 +100,7 @@ $(document).ready(function () {
 			$('.demo-layout').hide();
 			firebase.database().ref("/user-counter/"+firebase.auth().currentUser.uid).once("value").then(function(data){
 				console.log(data.val());
+
 			});
 		} else {
 
@@ -120,13 +122,14 @@ $(document).ready(function () {
 			console.log(searchHistory);
 			
 			userSearches.push(searchHistory);
-			for(i = 0; i < userSearches.length; i++){
-				if (i < 6) {
-					console.log('here');
-					$('#searchHistory').append('<span> &nbsp;' + userSearches[i]  + ' &nbsp</span>');
-				}
-			}
+			// for(i = 0; i < userSearches.length; i++){
+			// 	if (i < 6) {
+			// 		console.log('here');
+			// 		$('#searchHistory').append('<span> &nbsp;' + userSearches[i]  + ' &nbsp</span>');
+			// 	}
+			// }
 			console.log(userSearches);
+			alreadyAddedRecent.push(userSearches);
 		})
 	});
 
@@ -134,11 +137,25 @@ $(document).ready(function () {
 	// 	console.log(snapshot.val());
 	// });
 	
+	console.log(alreadyAddedRecent[0]);
 
 	$("#sign-out").on("click", function(){
 		firebase.auth().signOut();
 
 	});
+	debugger;
+	console.log(alreadyAddedRecent);
+	console.log(alreadyAddedRecent[0]);
+	var printCounter = 0;
+	setTimeout(function(){
+		  for(i = userSearches.length-1; i > 0; i--){
+				if (printCounter < 6) {
+					console.log('here');
+					$('#searchHistory').append('<span> &nbsp;' + userSearches[i]  + ' &nbsp</span>');
+					printCounter++;
+				}
+			}
+		}, 500);
 
 
 
@@ -342,4 +359,11 @@ $(document).ready(function () {
 	});
 $(document).on('click', '.lyric-btn', lyricSearch);
 });
+
+for(i = 0; i < userSearches.length; i++){
+				if (i < 6) {
+					console.log('here');
+					$('#searchHistory').append('<span> &nbsp;' + userSearches[i]  + ' &nbsp</span>');
+				}
+			}
 
