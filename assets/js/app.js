@@ -140,6 +140,17 @@ $(document).ready(function () {
 
 	});
 
+	var printCounter = 0;
+	setTimeout(function(){
+		  for(i = userSearches.length-1; i > 0; i--){
+				if (printCounter < 6) {
+					console.log('here');
+					$('#searchHistory').append('<span> &nbsp;' + userSearches[i]  + ' &nbsp</span>');
+					printCounter++;
+				}
+			}
+		}, 1000);
+
 
 
 	$('#buffer1').hide();
