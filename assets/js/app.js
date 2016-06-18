@@ -1,4 +1,4 @@
-
+var userSearches = [];
 function scrollToAnchor(aid){
 	    var aTag = $("a[name='"+ aid +"']");
 	    $('html, body').animate({scrollTop: aTag.offset().top},'slow');
@@ -110,7 +110,7 @@ $(document).ready(function () {
 		}
 	});
 	
-	var userSearches = [];
+	
 	console.log(userSearches);
 	firebase.auth().onAuthStateChanged(function(user) {
 		var userRef = firebase.database().ref("/user-counter/"+firebase.auth().currentUser.uid)
@@ -120,18 +120,27 @@ $(document).ready(function () {
 			console.log(searchHistory);
 			
 			userSearches.push(searchHistory);
-			// console.log(userSearches);
+			for(i = 0; i < userSearches.length; i++){
+				if (i < 6) {
+					console.log('here');
+					$('#searchHistory').append('<span> &nbsp;' + userSearches[i]  + ' &nbsp</span>');
+				}
+			}
+			console.log(userSearches);
 		})
 	});
 
 	// firebase.database().ref("/user-counter/"+firebase.auth().currentlySignedIn).on('value', function(snapshot) {
 	// 	console.log(snapshot.val());
 	// });
+	
 
 	$("#sign-out").on("click", function(){
 		firebase.auth().signOut();
 
 	});
+
+
 
 	$('#buffer1').hide();
 	$('#buffer2').hide();
