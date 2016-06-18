@@ -69,21 +69,22 @@ $(document).ready(function () {
 	$("#quickstart-sign-in").on("click", function(e){
 
 		if (firebase.auth().currentUser) {
-			firebase.auth().signOut();
-		} else {
-		var email = $("#email").val();
-		var password = $("#password").val();
 
-		firebase.auth().signInWithEmailAndPassword(email, password).catch(function(e){
-			console.log(e.message);
-			var errorCode = error.code;
-			var errorMessage = error.message;
-			if (errorCode === 'auth/wrong-password') {
-				alert('Sorry, that password is incorrect')
-			}
-		});
-		// $('.wrapper').show();
-		// 		$('.demo-layout').hide(); 
+			firebase.auth().signOut();
+
+		} else {
+			var email = $("#email").val();
+			var password = $("#password").val();
+
+			firebase.auth().signInWithEmailAndPassword(email, password).catch(function(e){
+				console.log(e.message);
+				var errorCode = error.code;
+				var errorMessage = error.message;
+				if (errorCode === 'auth/wrong-password') {
+					alert('Sorry, that password is incorrect')
+				}
+			});
+		
 		}
 	});
 
@@ -129,10 +130,8 @@ $(document).ready(function () {
 	
 	//$(document).on('click', '.lyric-btn', function (){
 	var lyricSearch = function(){
-<<<<<<< HEAD
+		debugger;
 		var user = firebase.auth().currentUser;
-=======
->>>>>>> c750503ce3600e5eda6d3f56ad69ed151cbc9f03
 		genreObj = {Miscellaneous: []};
 		var genreBool= true;
 		$('#results').empty();
@@ -146,8 +145,6 @@ $(document).ready(function () {
 		console.log(userInput);
 
 		//$('.lyric-input').val("");
-
-		$('.lyric-input').val("");
 
 		var queryURL = "https://api.musixmatch.com/ws/1.1/track.search";
 
@@ -249,12 +246,13 @@ $(document).ready(function () {
 		
 
 		var genrePicked = $(this).attr('genreSelect'); //sets to the ID of the genreButton that was picked
-		pickedTrackList = genreObj[genrePicked]; //sets to the property in genreObj that matches the button id. This is an array
+		var pickedTrackList = genreObj[genrePicked]; //sets to the property in genreObj that matches the button id. This is an array
 		//console.log(pickedTrackList); //logs array with all of the tracks for that genre
 		//console.log(pickedTrackList[0][0], pickedTrackList[0][1]); //logs the trackID and spotifyID of the first track for the picked genre
 		var counter = 0;
 
 		for (i = 0; i < pickedTrackList.length; i++){
+
 			var queryURL = "https://api.musixmatch.com/ws/1.1/track.lyrics.get";
 
 			$.ajax({
@@ -295,16 +293,6 @@ $(document).ready(function () {
 			for (i = 0; i < genreDrop.length; i++){
 				$('#dropdownGenre').append(genreDrop[i]);
 
-			}
-			emptyDrop = false;
-		}
-
-		if (emptyDrop){
-			var genreDropdown = $('<ul class="nav navbar-nav" id="addingGenres"><li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Change Genre<span class="caret"></span></a><ul class="dropdown-menu" id="dropdownGenre"></ul></li><ul>');
-			$('#navbarfull').append(genreDropdown);
-		
-			for (i = 0; i < genreDrop.length; i++){
-				$('#dropdownGenre').append(genreDrop[i]);
 			}
 			emptyDrop = false;
 		}
