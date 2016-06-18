@@ -88,6 +88,8 @@ $(document).ready(function () {
 		}
 	});
 
+	
+	
 	firebase.auth().onAuthStateChanged(function(user){
 		console.log("auth Changed", user);
 		currentlySignedIn = user;
@@ -97,10 +99,6 @@ $(document).ready(function () {
 			$('.demo-layout').hide();
 			firebase.database().ref("/user-counter/"+firebase.auth().currentUser.uid).once("value").then(function(data){
 				console.log(data.val());
-				// $('.wrapper').show();
-				// $('.demo-layout').hide();
-				// window.location.href = "index.html";
-				
 			});
 		} else {
 
@@ -111,6 +109,24 @@ $(document).ready(function () {
 			debugger;
 		}
 	});
+	
+	var userSearches = [];
+	console.log(userSearches);
+	firebase.auth().onAuthStateChanged(function(user) {
+		var userRef = firebase.database().ref("/user-counter/"+firebase.auth().currentUser.uid)
+		console.log(userRef);
+		userRef.on('child_added', function(data) {
+			var searchHistory = data.val();
+			console.log(searchHistory);
+			
+			userSearches.push(searchHistory);
+			// console.log(userSearches);
+		})
+	});
+
+	// firebase.database().ref("/user-counter/"+firebase.auth().currentlySignedIn).on('value', function(snapshot) {
+	// 	console.log(snapshot.val());
+	// });
 
 	$("#sign-out").on("click", function(){
 		firebase.auth().signOut();
@@ -158,6 +174,7 @@ $(document).ready(function () {
 
   			console.log(firebase.database().ref().update(updates));
 		}
+
 
 	    $.ajax({
 	        url: queryURL,
@@ -234,10 +251,24 @@ $(document).ready(function () {
 	    	console.log(genreObj);
 	    	console.log(genreDrop);
 	    };
+	    // console.log(counterKey);
+	    // console.log(userSearchesArray);
+		
+
 	    scrollToAnchor('gButtons');
 	    return false;
 	    
 	};
+
+	// firebase.database().ref('user-counter' + user.uid + '/' + counterKey).on('value', function(snapshot) {
+ //  		console.log(snapshot.val());
+	// });
+
+	dbLoad.on("child_changed", function(snapshot){
+		console.log(firebase.database().ref("/user-counter/"+firebase.auth().currentUser.uid).once("value"));
+	}, function(errorObject){
+			console.log("Errors handled: " + errorObject.code)
+	});
  
 	$(document).on('click', '.genre', function(){
 		$('#results').empty();
